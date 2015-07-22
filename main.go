@@ -4,27 +4,24 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-) func main() {
-	cmd := os.Args[0]
-	fmt.Printf("Program name: %s\n", cmd)
-	for i, a := range os.Args[2:] {
-		fmt.Printf("Argument %d is %s\n", i+1, a)
-	}
+)
+
+func main() {
+	program := os.Args[0]
+	fmt.Printf("Program name: %s\n", program)
 
 	command := os.Args[1]
 
 	fmt.Printf("Main command %s", command)
 	if command == "sa" {
-		fmt.Printf("SITEN ALIASE")
 		aliases, err := ioutil.ReadDir("/home/mark/.drush")
-		//fmt.Printf("alieases: %s", aliases)
-		for i, alias := range aliases {
-			if alias.IsDir {
-				fmt.Printf("Alias: %s", alias.Name, i+1)
-			}
+		for _, fileInfo := range aliases {
+			fmt.Printf("\n File Name : %s \n", fileInfo.Name())
 		}
 		if err != nil {
 			fmt.Printf("ReadDir %s: %v", aliases, err)
 		}
+	} else {
+		fmt.Print("Command Not Found")
 	}
 }
