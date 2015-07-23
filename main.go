@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -21,10 +22,20 @@ func main() {
 	}
 }
 
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
+
 func alias() {
 	aliases, err := ioutil.ReadDir(os.Getenv("HOME") + "/.drush")
 	for _, fileInfo := range aliases {
-		fmt.Printf("\n File Name : %s \n", fileInfo.Name())
+		if strings.Contains(fileInfo.Name(), ".drushrc.php") {
+			aliasFile, err := ioutil.ReadFile(os.Getenv("HOME") + "/.drush/" + fileInfo.Name())
+			check(err)
+			fmt.Printf("Alias File: %s \n", aliasFile)
+		}
 	}
 	if err != nil {
 		fmt.Printf("ReadDir %s: %v", aliases, err)
