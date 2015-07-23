@@ -9,18 +9,12 @@ import (
 func main() {
 	if len(os.Args) > 1 {
 
-		commands := map[string]string{
-			"sa": "alias",
-			"ls": "list",
-		}
-		for _, command := range commands {
-			currentcommand := os.Args[1]
-			fmt.Printf("Main command %s \n", currentcommand)
-			if currentcommand == "site-alias" {
-				alias()
-			} else if command == "list" {
-				fmt.Print("Command Not Found")
-			}
+		currentcommand := os.Args[1]
+		fmt.Printf("Main command %s \n", currentcommand)
+		if currentcommand == "alias" {
+			alias()
+		} else if currentcommand == "list" {
+			list()
 		}
 	} else {
 		fmt.Printf("Grush Version 0.0.0")
@@ -38,7 +32,7 @@ func alias() {
 }
 
 func list() {
-	fmt.Printf("Command not implemented")
+	readSettings()
 }
 
 func readSettings() {
@@ -46,8 +40,10 @@ func readSettings() {
 	// current directory and sites/default/files deep
 	currentdir, err := ioutil.ReadDir(".")
 	for _, fileInfo := range currentdir {
-		fmt.Printf("File %s", fileInfo.Name)
-		ioutil.ReadFile("index.php")
+		if fileInfo.IsDir() {
+			fmt.Printf("File %s", fileInfo)
+			ioutil.ReadFile("index.php")
+		}
 	}
 	if err != nil {
 		fmt.Printf("ReadDir %s: %v", currentdir, err)
