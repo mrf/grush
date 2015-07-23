@@ -37,9 +37,7 @@ func alias() {
 			fmt.Printf("Alias File: %s \n", aliasFile)
 		}
 	}
-	if err != nil {
-		fmt.Printf("ReadDir %s: %v", aliases, err)
-	}
+	check(err)
 }
 
 func list() {
@@ -56,7 +54,5 @@ func readSettings() {
 			ioutil.ReadFile("index.php")
 		}
 	}
-	if err != nil {
-		fmt.Printf("ReadDir %s: %v", currentdir, err)
-	}
+	check(err)
 }
