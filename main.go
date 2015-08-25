@@ -1,26 +1,18 @@
 package main
 
 import (
-	"bufio"
+  "os"
 	"fmt"
+
+	"bufio"
 	"io/ioutil"
-	"os"
 	"strings"
+
+	"github.com/mrf/grush/commands"
 )
 
 func main() {
-	if len(os.Args) > 1 {
-
-		currentcommand := os.Args[1]
-		fmt.Printf("Command: %s \n", currentcommand)
-		if currentcommand == "alias" {
-			alias()
-		} else if currentcommand == "list" {
-			list()
-		}
-	} else {
-		fmt.Printf("Grush Version 0.0.0")
-	}
+  commands.Execute()
 }
 
 func check(e error) {
