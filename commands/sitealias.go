@@ -13,16 +13,14 @@ var siteAliasCmd = &cobra.Command{
   Use: "site-alias",
   Aliases: []string{"sa"},
   Short: "Print site alias records for all known site aliases and local sites.",
-  Run: func(cmd *cobra.Command, args []string) {
-    siteAlias()
-  },
+  Run: siteAlias,
 }
 
 func init() {
   GrushCmd.AddCommand(siteAliasCmd)
 }
 
-func siteAlias() {
+func siteAlias(cmd *cobra.Command, args []string) {
 	aliases, err := ioutil.ReadDir(os.Getenv("HOME") + "/.drush")
 	for _, fileInfo := range aliases {
 		if strings.Contains(fileInfo.Name(), ".drushrc.php") {
