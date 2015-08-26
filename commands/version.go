@@ -1,8 +1,8 @@
 package commands
 
 import (
-  "fmt"
-  "github.com/spf13/cobra"
+	"fmt"
+	"github.com/spf13/cobra"
 )
 
 const (
@@ -10,13 +10,13 @@ const (
 )
 
 var versionCmd = &cobra.Command{
-  Use: "version",
-  Short: "Print the grush version number",
-  Run: func(cmd *cobra.Command, args []string) {
-    fmt.Printf("Grush Version : %s\n", VERSION )
-  },
+	Use:   "version",
+	Short: "Print the grush version number",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("Grush Version : %s\n", VERSION)
+	},
 }
 
 func init() {
-  GrushCmd.AddCommand(versionCmd)
+	GrushCmd.AddCommand(versionCmd)
 }

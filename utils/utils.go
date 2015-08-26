@@ -1,23 +1,17 @@
 package utils
 
 import (
-  "os"
-  "fmt"
-  "io/ioutil"
-  "bufio"
-  "strings"
+	"bufio"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"strings"
 )
 
 func Check(e error) {
 	if e != nil {
 		panic(e)
 	}
-}
-
-func ReadSettings() {
-	// see if we have alias and read from alias file
-	CheckDrupal()
-	// current directory and sites/default/files deep
 }
 
 /**

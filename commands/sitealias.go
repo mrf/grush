@@ -1,23 +1,23 @@
 package commands
 
 import (
-  "fmt"
-  "os"
+	"fmt"
+	"github.com/mrf/grush/utils"
+	"github.com/spf13/cobra"
 	"io/ioutil"
+	"os"
 	"strings"
-  "github.com/spf13/cobra"
-  "github.com/mrf/grush/utils"
 )
 
 var siteAliasCmd = &cobra.Command{
-  Use: "site-alias",
-  Aliases: []string{"sa"},
-  Short: "Print site alias records for all known site aliases and local sites.",
-  Run: siteAlias,
+	Use:     "site-alias",
+	Aliases: []string{"sa"},
+	Short:   "Print site alias records for all known site aliases and local sites.",
+	Run:     siteAlias,
 }
 
 func init() {
-  GrushCmd.AddCommand(siteAliasCmd)
+	GrushCmd.AddCommand(siteAliasCmd)
 }
 
 func siteAlias(cmd *cobra.Command, args []string) {
