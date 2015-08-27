@@ -5,6 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+
+	"github.com/mrf/grush/includes"
 )
 
 var coreStatusCmd = &cobra.Command{
@@ -19,5 +21,11 @@ func init() {
 }
 
 func coreStatus(cmd *cobra.Command, args []string) {
-	fmt.Printf("Drupal root : %s\n", viper.GetString("SelectedRoot"))
+	drupalRoot := includes.LocateDrupalRoot(viper.GetString("SelectedRoot"))
+	if drupalRoot == "" {
+		// Temporary output
+		fmt.Printf("Not a Drupal root.\n")
+	} else {
+		fmt.Printf("Drupal root : %s\n", drupalRoot)
+	}
 }
