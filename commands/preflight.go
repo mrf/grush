@@ -5,6 +5,7 @@ package commands
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 func PreFlight(cmd *cobra.Command, args []string) {
@@ -15,5 +16,5 @@ func PreFlight(cmd *cobra.Command, args []string) {
 
 func preFlightRoot() {
 	// Locate the actual drupal directory given the selectedRoot
-	//viper.GetString("SelectedRoot")
+	viper.GetString("SelectedRoot")
 }

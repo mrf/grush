@@ -2,10 +2,15 @@ package commands
 
 import (
 	"bytes"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"strings"
 
 	// CLI library
 	"github.com/spf13/cobra"
 	// Viper is used to store configuration similar to drush_set_context()
+	"github.com/mrf/grush/utils"
 	"github.com/spf13/viper"
 )
 
@@ -24,7 +29,7 @@ func Execute() {
 
 // Flags added to commands
 var Debug, AssumeNo, Simulate, Verbose, AssumeYes bool
-var Root, Uri string
+var Root, Config, Uri string
 
 func init() {
 	// POSIX/GNU-style flags
@@ -32,6 +37,7 @@ func init() {
 	GrushCmd.PersistentFlags().BoolVarP(&Debug, "debug", "d", false, "Display even more information, including internal messages.")
 	GrushCmd.PersistentFlags().BoolVarP(&AssumeNo, "no", "n", false, "Assume 'no' as answer to all prompts.")
 	GrushCmd.PersistentFlags().StringVarP(&Root, "root", "r", ".", "Drupal root directory to use (default: current directory).")
+	GrushCmd.PersistentFlags().StringVarP(&Root, "config", "c", ".", "Location of custom config file.")
 	GrushCmd.PersistentFlags().BoolVarP(&Simulate, "simulate", "s", false, "Simulate all relevant actions (don't actually change the system).")
 	GrushCmd.PersistentFlags().StringVarP(&Uri, "uri", "l", "", "URI of the drupal site to use (only needed in multisite environments or when running on an alternate port).")
 	GrushCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "Display extra information about the command.")
@@ -43,13 +49,45 @@ func init() {
  */
 func InitializeConfig() {
 	// Viper requires a configuration "file" so we provide an empty one here.
-	// @todo: Expand to load grush.yml from standard drush locations, plus
-	//        optionally all of the actual drush config files.
 	viper.SetConfigType("yaml")
 	var yamlConfig = []byte("")
 	viper.ReadConfig(bytes.NewBuffer(yamlConfig))
 
+	// @todo: Expand to load grush.yml from standard drush locations, plus
+
+	// Load Drush and Grush Config Files
+	InitializeGlobalConfig()
+	InitializeSiteConfig()
+
 	loadDefaultSettings()
+}
+
+/**
+ * Load Global Config
+ */
+func InitializeGlobalConfig() {
+	// File in drush.php install directory
+	// File in User Directory ~/.drushrc.php
+	globalConfigFile, err := ioutil.ReadFile(os.Getenv("HOME") + "/.drushrc.php")
+	utils.Check(err)
+	fmt.Printf("Global Config File: %s \n", globalConfigFile)
+	// File or files in ~/.drush
+	drushFolder, err := ioutil.ReadDir(os.Getenv("HOME") + "/.drush")
+	for _, fileInfo := range drushFolder {
+		if strings.Contains(fileInfo.Name(), ".drushrc.php") {
+			aliasFile, err := ioutil.ReadFile(os.Getenv("HOME") + "/.drush/" + fileInfo.Name())
+			utils.Check(err)
+			fmt.Printf("Alias File: %s \n", aliasFile)
+		}
+	}
+	utils.Check(err)
+}
+
+/**
+ * Load Local Site Config
+ */
+func InitializeSiteConfig() {
+	// Scan for any local config files in site
 }
 
 /**
@@ -59,6 +97,7 @@ func loadDefaultSettings() {
 	viper.SetDefault("Debug", Debug)
 	viper.SetDefault("AssumeNo", AssumeNo)
 	viper.SetDefault("SelectedRoot", Root)
+	viper.SetDefault("Config", Config)
 	viper.SetDefault("Simulate", Simulate)
 	viper.SetDefault("Uri", Uri)
 	viper.SetDefault("Verbose", Verbose)
