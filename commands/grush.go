@@ -49,6 +49,8 @@ func init() {
  */
 func InitializeConfig() {
 	// Viper requires a configuration "file" so we provide an empty one here.
+	viper.SetConfigName("grush")
+	viper.AddConfigPath("$HOME/.drush")
 	viper.SetConfigType("yaml")
 	var yamlConfig = []byte("")
 	viper.ReadConfig(bytes.NewBuffer(yamlConfig))
@@ -87,7 +89,7 @@ func InitializeGlobalConfig() {
  * Load Local Site Config
  */
 func InitializeSiteConfig() {
-	// Scan for any local config files in site
+	// Scan for any local config files in current site
 }
 
 /**
