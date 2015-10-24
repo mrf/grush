@@ -26,6 +26,7 @@ func coreStatus(cmd *cobra.Command, args []string) {
 		// Temporary output
 		fmt.Printf("Not a Drupal root.\n")
 	} else {
+		includes.Boot8("string")
 		fmt.Printf("Drupal root : %s\n", drupalRoot)
 	}
 }

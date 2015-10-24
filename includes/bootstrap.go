@@ -2,7 +2,7 @@ package includes
 
 import (
 	"fmt"
-	"os"
+	"log"
 	"os/exec"
 )
 
@@ -28,14 +28,18 @@ func FindBootstrapForRoot(path string) Boot {
 
 func Boot8(level string) Boot {
 	// todo: include boot level
-	// todo: check if php exists and error out before execution see: exec.LookPath
+	app := "php"
 
-	cmd := exec.Command("php", "-r print 'we have php';")
+	flags := "-r"
+	code := "echo getcwd();"
 
-	output, err := cmd.CombinedOutput()
+	cmd := exec.Command(app, flags, code)
+	stdout, err := cmd.Output()
+
 	if err != nil {
-		os.Stderr.WriteString(fmt.Sprintf("==> Error: %s\n", err.Error()))
+		log.Fatal(err)
 	}
-	fmt.Printf("==> Output: %s\n", string(output))
+
+	fmt.Printf("PHP Says:", stdout)
 	return nil
 }
